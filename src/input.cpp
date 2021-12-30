@@ -90,7 +90,8 @@ char lagFlag;
 extern bool frameAdvanceLagSkip;
 extern bool movieSubtitles;
 //-------------
-
+uint8 wczytaj;
+uint8 sterowanie;
 static uint8 joy_readbit[2];
 uint8 joy[4]={0,0,0,0}; //HACK - should be static but movie needs it
 uint16 snesjoy[4]={0,0,0,0}; //HACK - should be static but movie needs it
@@ -293,6 +294,14 @@ static void LoadGP(int w, MovieRecord* mr)
 //basic joystick port driver
 static uint8 ReadGP(int w)
 {
+        if(wczytaj == 1)
+        {
+                wczytaj = 0;
+                FCEUSS_Load(NULL, false);
+        }
+
+        joy[1] = sterowanie;
+
 	uint8 ret;
 
 	if(joy_readbit[w]>=8)
